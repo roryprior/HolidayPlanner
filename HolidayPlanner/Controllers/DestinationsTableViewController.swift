@@ -15,7 +15,7 @@ class DestinationsTableViewController: UITableViewController {
   
   override func viewDidLoad() {
     super.viewDidLoad()
-    self.title = "Destinations"
+    self.title = "Destinations" // TODO: localise
     
     self.tableView.register(UITableViewCell.self, forCellReuseIdentifier: cellIdentifier)
   }

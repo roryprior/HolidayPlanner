@@ -41,35 +41,38 @@ class DestinationDetailTableViewController: UITableViewController {
     weatherChecker.fetchWeather(city: cityString) { (days, error) in
       guard error == nil else {
 
-        DispatchQueue.main.async {
+        DispatchQueue.main.async { [weak self] in
           let alert = UIAlertController.init(title: "Error", message: error!.localizedDescription, preferredStyle: .alert)
           alert.addAction(UIAlertAction.init(title: "OK", style: .cancel, handler: nil))
-          self.present(alert, animated: true, completion: nil)
+          self?.present(alert, animated: true, completion: nil)
         }
         return
       }
       
       guard days != nil else {
         
-        DispatchQueue.main.async {
+        DispatchQueue.main.async { [weak self] in
           let alert = UIAlertController.init(title: "Error", message: "Sorry I can't find any weather data for this destination!", preferredStyle: .alert)
           alert.addAction(UIAlertAction.init(title: "OK", style: .cancel, handler: nil))
-          self.present(alert, animated: true, completion: nil)
+          self?.present(alert, animated: true, completion: nil)
         }
         return
       }
         
       self.destination!.days = days!
       
-      DispatchQueue.main.async {
-        self.destinationViewModel = DestinationViewModel.init(with: self.destination!)
-        self.title = self.destinationViewModel?.name()
-        self.tableView.reloadData()
+      DispatchQueue.main.async { [weak self] in
+        guard self?.destination != nil else { return }
+        self?.destinationViewModel = DestinationViewModel.init(with: self!.destination!)
+        self?.title = self?.destinationViewModel?.name()
+        self?.tableView.reloadData()
       }
     }
   }
   
   // MARK: - Table view data source
+  /* for single responsibility reasons we could split the datasource out into a seperate file
+     however it's overkill for this simple app. */
 
   override func numberOfSections(in tableView: UITableView) -> Int {
     

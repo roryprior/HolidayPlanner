@@ -10,11 +10,11 @@ import Foundation
 
 class WeatherChecker : APIRequest {
   
-  private let appID = "YOUR API KEY HERE" // account key for accessing the weather API
+  private let appID = "3e2161379fa2f3e61026dd8d38b18041" // account key for accessing the weather API
 
   /*
-   * Get 5 days of weather information. Because the OpenWeatherMap API only returns a 4 day forecast
-   * from the next calendar day, we have to perform two API requests, one to get todays weather
+   * Get 5 days of weather information. Because the OpenWeatherMap API sometimes only returns a 4 day forecast
+   * from the next calendar day, we have to perform two API requests, one to get today's weather
    * and another to get the forecast. The JSON responses are also slightly different between these.
    * Note there is a limit of 60 API requests a minute.
    */
@@ -103,20 +103,22 @@ class WeatherChecker : APIRequest {
             
             // If we don't currently have a date for our day stuct, set it now.
             if currentDay.date == nil {
-              currentDay.date = date
-              currentDay.icon = iconCode
-              currentDay.description = description
+               currentDay.date = date
+               currentDay.icon = iconCode
+               currentDay.description = description
             }
-              // if we do have a date, prefer to use the weather forecast from 12pm (if possible) as the API won't give us a daily summary
+              // if we do have a date, prefer to use the weather forecast from 12 or 1pm (if possible) as the API won't give us a daily summary
             else if calendar.dateComponents([.day], from: currentDay.date!).day ==
                     calendar.dateComponents([.day], from: date).day {
               
-              if(calendar.dateComponents([.hour], from: date).hour == 12) {
+              
+              if(calendar.dateComponents([.hour], from: date).hour == 12 ||
+                 calendar.dateComponents([.hour], from: date).hour == 13) {
                 currentDay.icon = iconCode
                 currentDay.description = description
               }
             }
-              // It's a new day, store the current day and initalise a new day stuct
+            // It's a new day, store the current day and initalise a new day stuct
             else {
               
               // avoid duplicating the weather forecast for today if we already have it
@@ -127,6 +129,8 @@ class WeatherChecker : APIRequest {
               
               currentDay = Day.init()
               currentDay.date = date
+              currentDay.icon = iconCode
+              currentDay.description = description
             }
             
             if(temp > currentDay.highTemp) { currentDay.highTemp = temp }

@@ -37,7 +37,7 @@ class DayViewModel {
     guard day != nil else {
       return "..."
     }
-    
+
     return day?.description ?? "..."
   }
   

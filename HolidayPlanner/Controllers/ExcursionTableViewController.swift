@@ -31,6 +31,7 @@ class ExcursionTableViewController: UITableViewController {
     
     self.destination = aDestination
     self.day = aDestination.days[dayIndex]
+    
     if let date = day?.date {
   
       excursionChecker.fetchExcursions(destination: aDestination.name, date: date, completion: { (excursions, error) in
@@ -46,8 +47,8 @@ class ExcursionTableViewController: UITableViewController {
         
         self.day?.excursions = excursions
         
-        DispatchQueue.main.async {
-          self.tableView.reloadData()
+        DispatchQueue.main.async { [weak self] in
+          self?.tableView.reloadData()
         }
       })
     }
@@ -101,6 +102,7 @@ class ExcursionTableViewController: UITableViewController {
           
           self.excursionManager.add(excursion: excursion)
           
+          // these strings should come from localizable.strings in a proper app
           let alert = UIAlertController.init(title: "Saved", message: "This excursion has been saved. You can view your saved excursions from the Destinations screen", preferredStyle: .alert)
           alert.addAction(UIAlertAction.init(title: "Done", style: .cancel, handler: nil))
           self.present(alert, animated: true, completion: nil)
