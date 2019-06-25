@@ -22,7 +22,15 @@ class ExcursionChecker {
       do {
         if let data = try? Data.init(contentsOf: excursionJSONURL) {
           let decoder = JSONDecoder()
-          let excursions = try decoder.decode(Array<Excursion>.self, from: data)
+          var excursions = try decoder.decode(Array<Excursion>.self, from: data)
+          
+          // this is a little hack because we're not getting real data from a server and instead are reusing the same
+          // json snippet for each destination, this simply sets the destination name in the excursion structs so we can
+          // give the impression the data is unique to that location.
+          for index in 0..<excursions.count {
+            excursions[index].destinationName = destination
+          }
+          
            completion(excursions, nil)
         }
         else {
