@@ -10,13 +10,21 @@
 
 import Foundation
 
-struct Excursion {
+struct Excursion : Codable {
   
-  var destinationName: String
+  var destinationName = "Somewhere"
   var name : String
   var description : String
   var price : Double // in pence
   var image : String
+  
+  // we don't want destinationName to be encoded with codable so we exclude its key
+  private enum CodingKeys: String, CodingKey {
+    case name
+    case description
+    case price
+    case image
+  }
   
   var debugDescription: String {
     return "Excursion: \(name) description: \(description) price: £\(String(format: "%.2f", price / 100)) image: \(image)"

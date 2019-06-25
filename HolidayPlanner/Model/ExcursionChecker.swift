@@ -17,28 +17,22 @@ class ExcursionChecker {
     
     // the mocked up data will be the same for every destination and date so we ignore these parameters
     
-    if let excursionJSONURL = Bundle.main.url(forResource: "excursions", withExtension: "json"),
-       let data = try? Data.init(contentsOf: excursionJSONURL) {
-    
-      let json = try? JSONSerialization.jsonObject(with: data, options: [])
-    
-      var excursions = Array.init() as Array<Excursion>
+    if let excursionJSONURL = Bundle.main.url(forResource: "excursions", withExtension: "json") {
       
-      if let root = json as? [String: Any],
-         let items = root["items"] as? Array<[String : Any]> {
-      
-          for item in items {
-            
-            if let name = item["name"] as? String,
-               let description = item["description"] as? String,
-               let price = (item["price"] as? NSNumber)?.doubleValue,
-               let image = item["image"] as? String {
-            
-              let excursion = Excursion.init(destinationName: destination, name: name, description: description, price: price, image: image)
-              excursions.append(excursion)
-          }
+      do {
+        if let data = try? Data.init(contentsOf: excursionJSONURL) {
+          let decoder = JSONDecoder()
+          let excursions = try decoder.decode(Array<Excursion>.self, from: data)
+           completion(excursions, nil)
         }
-        completion(excursions, nil)
+        else {
+          let error = NSError(code: 404, message: "Unable to open excursion data")
+          completion(nil, error)
+        }
+      }
+      catch let error {
+        print("Error fetching excursions \(error.localizedDescription)")
+        completion(nil, error)
       }
     }
     else {

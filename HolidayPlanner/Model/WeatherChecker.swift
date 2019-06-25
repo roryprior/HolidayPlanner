@@ -10,7 +10,7 @@ import Foundation
 
 class WeatherChecker : APIRequest {
   
-  private let appID = "YOUR API KEY HERE!" // account key for accessing the weather API
+  private let appID = "3e2161379fa2f3e61026dd8d38b18041" // account key for accessing the weather API
 
   /*
    * Get 5 days of weather information. Because the OpenWeatherMap API sometimes only returns a 4 day forecast
@@ -35,6 +35,7 @@ class WeatherChecker : APIRequest {
         return
       }
       
+      /* Why not use Codable rather than JSONSerialization? The OpenWeatherMap API is way more complex than we really want to have to worry about modelling in our app and worse yet as we need to query two different end points which return data in different formats it would introduce a ton of unnecessary complexity. */
       let json = try? JSONSerialization.jsonObject(with: data!, options: [])
     
       var days = Array.init() as Array<Day>

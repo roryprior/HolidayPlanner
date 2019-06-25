@@ -9,7 +9,7 @@
 import XCTest
 @testable import HolidayPlanner
 
-class Jet2TestTests: XCTestCase {
+class HolidayPlannerTests: XCTestCase {
 
     override func setUp() {
         // Put setup code here. This method is called before the invocation of each test method in the class.

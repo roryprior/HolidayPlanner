@@ -3,7 +3,6 @@
 //  HolidayPlanner
 //
 //  Class that lets us save and restore a list of excursions selected by the user.
-//  This is a fairly quick and dirty solution due to time constraints
 //
 //  Created by Rory Prior on 17/03/2019.
 //  Copyright © 2019 ThinkMac Software. All rights reserved.
@@ -23,7 +22,7 @@ class ExcursionManager {
   func filePath() -> String {
     
     let documentDirectory = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)[0]
-    return "\(documentDirectory)/excursions.plist"
+    return "\(documentDirectory)/excursions.json"
   }
   
   func add(excursion: Excursion) {
@@ -40,46 +39,38 @@ class ExcursionManager {
   }
   
   /*
-   * Save the excursions by converting them to NSDictionaries which be stored as a plist file
+   * Save the excursions by converting them to a local JSON formatted file
    */
   func save() {
     
-    let saveArray = NSMutableArray.init()
-    
-    for excursion in excursions {
-      
-      let dictionary = NSMutableDictionary.init()
-      dictionary.setObject(excursion.name as NSString, forKey: "name" as NSString)
-      dictionary.setObject(excursion.description as NSString, forKey: "description" as NSString)
-      dictionary.setObject(excursion.destinationName as NSString, forKey: "destination" as NSString)
-      dictionary.setObject(excursion.image as NSString, forKey: "image" as NSString)
-      dictionary.setObject(NSNumber.init(value: excursion.price), forKey: "price" as NSString)
-      
-      saveArray.add(dictionary)
+    do {
+      let encoder = JSONEncoder()
+      if let encoded = try? encoder.encode(excursions) {
+        if let json = String(data: encoded, encoding: .utf8) {
+          try json.write(toFile: self.filePath(), atomically: true, encoding: .utf8)
+        }
+      }
     }
-    
-    saveArray.write(toFile: filePath(), atomically: true)
+    catch let error {
+      print("Error saving excursions! \(error.localizedDescription)")
+    }
   }
   
   /*
-   * Restore the excursions from a plist file
+   * Restore the excursions from a local JSON formatted file
    */
   func restore() {
     
     if FileManager.default.fileExists(atPath: filePath()) {
     
-      if let restoreArray = NSArray.init(contentsOfFile: filePath()) {
-      
-        excursions = Array.init()
-        
-        for case let dictionary as NSDictionary in restoreArray {
-          
-          excursions.append(Excursion.init(destinationName: dictionary.object(forKey: "destination") as! String,
-                                           name: dictionary.object(forKey: "name") as! String,
-                                           description: dictionary.object(forKey: "description") as! String,
-                                           price: (dictionary.object(forKey: "price") as! NSNumber).doubleValue,
-                                           image: dictionary.object(forKey: "image") as! String))
+      do {
+        let decoder = JSONDecoder()
+        if let data = try? Data.init(contentsOf: URL.init(fileURLWithPath: filePath())) {
+          self.excursions = try decoder.decode(Array<Excursion>.self, from: data)
         }
+      }
+      catch let error {
+        print("Error loading excursions! \(error.localizedDescription)")
       }
     }
   }

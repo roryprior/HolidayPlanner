@@ -1,29 +1,26 @@
-{
-  "items" : [
-    {
-      "name" : "Segway City Tour",
-      "description" : "A guided tour of the city centre on self-balancing Seyway scooters, showing you historic buildings, the best shops and restaurants.",
-      "price" : 999,
-      "image" : "citytour.jpg"
-    },
-    {
-      "name" : "Boat Trip",
-      "description" : "Take in the sights from the water on this 1 hour cruise with commentary.",
-      "price" : 1499,
-      "image" : "boattrip.jpg"
-    },
-    {
-      "name" : "Ghost Walk",
-      "description" : "Enjoy a spooky evening guided walk around the most haunted parts of the city and hear local legends and ghost stories.",
-      "price" : 1050,
-      "image" : "ghostwalk.jpg"
-    },
-    {
-      "name" : "Day Trip",
-      "description" : "Get out of the city to see nearby historic sights. Fully airconditioned coach travel to and from city centre included.",
-      "price" : 2999,
-      "image" : "daytrip.jpg"
-    }
-  ]
-}
- 
+[
+  {
+    "name" : "Segway City Tour",
+    "description" : "A guided tour of the city centre on self-balancing Seyway scooters, showing you historic buildings, the best shops and restaurants.",
+    "price" : 999,
+    "image" : "citytour.jpg"
+  },
+  {
+    "name" : "Boat Trip",
+    "description" : "Take in the sights from the water on this 1 hour cruise with commentary.",
+    "price" : 1499,
+    "image" : "boattrip.jpg"
+  },
+  {
+    "name" : "Ghost Walk",
+    "description" : "Enjoy a spooky evening guided walk around the most haunted parts of the city and hear local legends and ghost stories.",
+    "price" : 1050,
+    "image" : "ghostwalk.jpg"
+  },
+  {
+    "name" : "Day Trip",
+    "description" : "Get out of the city to see nearby historic sights. Fully airconditioned coach travel to and from city centre included.",
+    "price" : 2999,
+    "image" : "daytrip.jpg"
+  }
+]
