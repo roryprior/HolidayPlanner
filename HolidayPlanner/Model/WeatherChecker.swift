@@ -10,7 +10,7 @@ import Foundation
 
 class WeatherChecker : APIRequest {
   
-  private let appID = "3e2161379fa2f3e61026dd8d38b18041" // account key for accessing the weather API
+  private let appID = "YOUR API KEY GOES HERE" // account key for accessing the weather API
 
   /*
    * Get 5 days of weather information. Because the OpenWeatherMap API sometimes only returns a 4 day forecast
